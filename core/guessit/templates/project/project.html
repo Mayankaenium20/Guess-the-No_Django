@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block start %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Guess the Lucky Number 🎲</h2>
+    <form onsubmit="return checkLuck()">
+        <div class="form-group col-md-5 mx-auto">
+            <label for="guessNumber">Hope you will win the game!!</label> <br><br>
+            <input type="number" class="form-control" id="input" placeholder="Enter your guess" min="1" max="100">
+        </div>
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-success btn-lg">Check Now!</button>
+        </div>
+        <!-- Hidden input to store the lucky number -->
+        <input type="hidden" id="luckyNumber" value="{{ lucky_number }}">
+    </form>
+</div>
+
+<br>
+<!-- <p><b>{{ lucky_number }}</b></p> : to check the lucky no -->  
+
+<script>
+    let count = 0;
+
+    function checkLuck() {
+        const inputElement = document.getElementById('input');
+        const input = parseInt(inputElement.value);
+        const lucky_number = parseInt(document.getElementById('luckyNumber').value);
+
+        if (isNaN(input)) {
+            alert("Input cannot be blank or non-numeric!");
+            return false;
+        }
+
+        count += 1;
+
+        if (count >= 3) {
+            alert("You have exceeded the maximum attempts! The page will now reload.");
+            window.location.reload();
+            return false;
+        }
+
+        if (lucky_number === input) {
+            alert("Wow! You won the game!");
+            return false;
+        } else if (lucky_number > input) {
+            alert(`Sorry, your guess is too small! Try again. You have ${3 - count} attempts left.`);
+        } else if (lucky_number < input) {
+            alert(`Sorry, your guess is too big! Try again. You have ${3 - count} attempts left.`);
+        }
+
+        return false;
+    }
+</script>
+
+{% endblock %}
